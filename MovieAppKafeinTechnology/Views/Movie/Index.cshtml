@@ -1,0 +1,77 @@
+﻿@model ResultDTO<MovieListDto>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ImagePath = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+}
+
+
+@await Component.InvokeAsync("SearchComponent")
+<div class="container urunler-bg">
+    <div class="row">
+        @await Component.InvokeAsync("SearchHistoryComponent")
+        @if (Model.IsStatus)
+        {
+            <div class="col-md-12 col-lg-9">
+                <div class="baslik">
+                    Filmler
+                </div>
+                <div class="row">
+                    @foreach (var item in Model.results)
+                    {
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="card-list">
+                                <div class="card">
+                                    <a class="card-image text-decoration-none" asp-controller="Movie" asp-action="MovieDetails" asp-route-id="@item.id">
+                                        <img src="@ImagePath@item.poster_path" alt="@item.title" />
+
+                                        <div class="card-description">
+                                            <h2>@item.title</h2>
+                                            <p>@item.overview</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (Model.total_pages > 1)
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <nav aria-label="">
+                                <ul class="pagination pagination-md">
+                                    @if (Model.Page == 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link " asp-controller="Movie" asp-action="Index" asp-route-pageId="@(Model.Page)" asp-route-query="@ViewBag.query" tabindex="-1">@Model.Page</a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Movie" asp-action="Index" asp-route-pageId="@(Model.Page+1)" asp-route-query="@ViewBag.query">@(Model.Page+1)</a></li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Movie" asp-action="Index" asp-route-pageId="@(Model.Page+2)" asp-route-query="@ViewBag.query">@(Model.Page+2)</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link " asp-controller="Movie" asp-action="Index" asp-route-pageId="@(Model.Page-1)" asp-route-query="@ViewBag.query" tabindex="-1">@(Model.Page==1?Model.Page:Model.Page-1)</a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Movie" asp-action="Index" asp-route-pageId="@(Model.Page)" asp-route-query="@ViewBag.query">@(Model.Page)</a></li>
+                                        <li class="page-item"><a class="page-link" asp-controller="Movie" asp-action="Index" asp-route-pageId="@(Model.Page+1)" asp-route-query="@ViewBag.query">@(Model.Page+1)</a></li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="col-md-12 col-lg-8">
+                <div class="alert alert-danger" role="alert">
+                    Film Bulunamadı
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

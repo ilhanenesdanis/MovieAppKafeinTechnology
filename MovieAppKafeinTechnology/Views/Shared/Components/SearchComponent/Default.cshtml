@@ -1,0 +1,30 @@
+﻿<div class="about-x">
+    <div class="ust-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 m-auto">
+                    <div class="arm-t">
+                        Film Arama
+                    </div>
+                </div>
+                <div class="col-md-4 m-auto">
+                    <div class="arm-txt">
+                        Arama yaparak yüzlerce Film arasından aradığınız
+                        Filmi kolayca bulabilirsiniz.
+                    </div>
+                </div>
+                <div class="col-md-6 m-auto">
+                    <div class="araman">
+                        <div class="yeni-arm">
+                            <form asp-controller="Movie" asp-action="Index" method="get">
+                                <input type="text" id="search-bar" autocomplete="off" name="query" placeholder="Anahtar Kelime giriniz..">
+                                <a onclick="Search()"><img class="search-icon" src="/Content/images/img/arama.png"></a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,95 @@
+﻿@model MovieDetailVM
+@{
+    ViewData["Title"] = "MovieDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ImagePath = "https://www.themoviedb.org/t/p/w440_and_h660_face";
+    var Path = "https://www.themoviedb.org/t/p/w220_and_h330_face";
+    var genresList = "";
+}
+
+@await Component.InvokeAsync("SearchComponent")
+@if (Model.MovieDetailDto.IsStatus == true)
+{
+    <div class="urunler-bg">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12 col-lg-12">
+                    <div class="baslik mb-5">
+                        @Model.MovieDetailDto.Data.original_title
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-5">
+                            <div class="gundem-img">
+                                <img src="@ImagePath@Model.MovieDetailDto.Data.poster_path" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-7 m-auto">
+                            <div class="gundem-txt">
+                                <div class="title">
+                                    @if (Model.MovieDetailDto.Data.overview != "")
+                                    {
+                                        <span class="SubTitle">Genel Bakış: </span> <span> @Model.MovieDetailDto.Data.overview</span>
+                                    }
+                                </div>
+                                <div class="text">
+                                    @if (Model.MovieDetailDto.Data.tagline != "")
+                                    {
+                                        <span class="SubTitle">Slogan</span> <span> @Model.MovieDetailDto.Data.tagline</span>
+                                    }
+                                </div>
+                                <div class="text">
+                                    @foreach (var item in Model.MovieDetailDto.Data.genres)
+                                    {
+                                        genresList += " " + item.name + " -";
+                                    }
+                                    @if (genresList.Length > 0)
+                                    {
+                                        <span class="SubTitle">Türler </span> <span> @genresList.Substring(0, genresList.Length - 1)</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.MovieListDto.results.Count > 0)
+                    {
+                        <div class="sliders-gundem ">
+                            <div class="container">
+                                <div class="title mt-5">
+                                    Benzer Filmler
+                                </div>
+                                <div class="owl-carousel owl-theme" id="Movie-owl">
+                                    @foreach (var item in Model.MovieListDto.results.Take(10))
+                                    {
+                                        <div class="item">
+                                            <div class="card-list">
+                                                <div class="card">
+                                                    <a class="card-image text-decoration-none" asp-controller="Movie" asp-action="MovieDetails" asp-route-id="@item.id">
+                                                        <img src="@Path@item.poster_path" class="img-fluid" alt="@item.title" />
+                                                        <div class="card-description">
+                                                            <h2>@item.title</h2>
+                                                            <p>@item.overview</p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        Film Bulunamadı
+    </div>
+}
+
